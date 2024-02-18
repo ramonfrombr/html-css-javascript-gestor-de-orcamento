@@ -33,6 +33,8 @@ function adicionarTransacao(e) {
         transacoes.push(transacao);
         adicionarTransacaoDOM(transacao);
 
+        atualizarValores();
+
         texto.value = "";
         quantidade.value = "";
     }
@@ -65,6 +67,29 @@ function adicionarTransacaoDOM(transacao) {
     lista.appendChild(item);
 }
 
+function atualizarValores() {
+    const quantidades = transacoes.map((transacao) => transacao.quantidade);
+
+    const total = quantidades
+        .reduce((soma, item) => (soma += item), 0)
+        .toFixed(2);
+
+    const ganhos = quantidades
+        .filter((item) => item > 0)
+        .reduce((soma, item) => (soma += item), 0)
+        .toFixed(2);
+
+    const despesas = (
+        quantidades
+            .filter((item) => item < 0)
+            .reduce((soma, item) => (soma += item), 0) * -1
+    ).toFixed(2);
+
+    balanco.innerText = `${total}`;
+    dinheiro_mais.innerText = `${ganhos}`;
+    dinheiro_menos.innerText = `${despesas}`;
+}
+
 function removerTransacao(id) {
     transacoes = transacoes.filter((transacao) => transacao.id !== id);
 
@@ -75,6 +100,7 @@ function inicializar() {
     lista.innerHTML = "";
 
     transacoes.forEach(adicionarTransacaoDOM);
+    atualizarValores();
 }
 
 inicializar();
