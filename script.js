@@ -6,7 +6,7 @@ const formulario = document.getElementById("formulario");
 const texto = document.getElementById("texto");
 const quantidade = document.getElementById("quantidade");
 
-const transacoes = [
+let transacoes = [
     { id: 1, texto: "Almoço", quantidade: -20 },
     { id: 2, texto: "Salário", quantidade: 1000 },
     { id: 3, texto: "Conta de Luz", quantidade: -70 },
@@ -26,11 +26,19 @@ function adicionarTransacaoDOM(transacao) {
     item.innerHTML = `
         ${transacao.texto} <span>${sinal}${Math.abs(
         transacao.quantidade
-    )}</span> <button class="botao-apagar">x</button>
+    )}</span> <button class="botao-apagar" onclick="removerTransacao(${
+        transacao.id
+    })">x</button>
     `;
 
     // Adiciona à lista
     lista.appendChild(item);
+}
+
+function removerTransacao(id) {
+    transacoes = transacoes.filter((transacao) => transacao.id !== id);
+
+    inicializar();
 }
 
 function inicializar() {
