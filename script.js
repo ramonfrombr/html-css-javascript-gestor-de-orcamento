@@ -13,6 +13,36 @@ let transacoes = [
     { id: 4, texto: "Internet", quantidade: -60 },
 ];
 
+// Adiciona transação pelo formulário
+function adicionarTransacao(e) {
+    e.preventDefault();
+
+    if (
+        texto.value.trim() === "" ||
+        quantidade.value.trim() === "" ||
+        isNaN(quantidade.value.trim())
+    ) {
+        alert("Por favor adicione um texto e uma quantidade válidos.");
+    } else {
+        const transacao = {
+            id: gerarID(),
+            texto: texto.value,
+            quantidade: +quantidade.value,
+        };
+
+        transacoes.push(transacao);
+        adicionarTransacaoDOM(transacao);
+
+        texto.value = "";
+        quantidade.value = "";
+    }
+}
+
+// Gera um ID aleatório
+function gerarID() {
+    return Math.floor(Math.random() * 1000000000);
+}
+
 // Adiciona transações ao DOM da lista
 function adicionarTransacaoDOM(transacao) {
     // Define sinal
@@ -48,3 +78,5 @@ function inicializar() {
 }
 
 inicializar();
+
+formulario.addEventListener("submit", adicionarTransacao);
