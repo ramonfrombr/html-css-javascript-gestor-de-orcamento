@@ -6,12 +6,19 @@ const formulario = document.getElementById("formulario");
 const texto = document.getElementById("texto");
 const quantidade = document.getElementById("quantidade");
 
+/*
 let transacoes = [
     { id: 1, texto: "Almoço", quantidade: -20 },
     { id: 2, texto: "Salário", quantidade: 1000 },
     { id: 3, texto: "Conta de Luz", quantidade: -70 },
     { id: 4, texto: "Internet", quantidade: -60 },
 ];
+*/
+
+const transacoesArmazemLocal = JSON.parse(localStorage.getItem("transacoes"));
+
+let transacoes =
+    localStorage.getItem("transacoes") !== null ? transacoesArmazemLocal : [];
 
 // Adiciona transação pelo formulário
 function adicionarTransacao(e) {
@@ -34,6 +41,7 @@ function adicionarTransacao(e) {
         adicionarTransacaoDOM(transacao);
 
         atualizarValores();
+        atualizarArmazemLocal();
 
         texto.value = "";
         quantidade.value = "";
@@ -93,7 +101,14 @@ function atualizarValores() {
 function removerTransacao(id) {
     transacoes = transacoes.filter((transacao) => transacao.id !== id);
 
+    atualizarArmazemLocal();
+
     inicializar();
+}
+
+// Atualiza transações no armazém local
+function atualizarArmazemLocal() {
+    localStorage.setItem("transacoes", JSON.stringify(transacoes));
 }
 
 function inicializar() {
